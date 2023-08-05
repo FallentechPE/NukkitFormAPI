@@ -1,4 +1,4 @@
-name: GUIAPI
+name: MenuAPI
 main: io.fallentech.gui.GUI
 version: "{project.version}"
 
