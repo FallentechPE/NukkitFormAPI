@@ -1,0 +1,14 @@
+name: FactionsCore
+main: io.fallentech.factions.Factions
+version: "{version}"
+
+api: [ "1.0.0" ]
+load: STARTUP
+
+authors: [ "haappi" ]
+description: FallenTech Factions Core.
+website: https://github.com/FallentechPE/nukkit-factions
+# depend: []
+# softdepend: []
+prefix: "Facs" # Log prefix in console
+#loadbefore: ["ImportantPlugin"]

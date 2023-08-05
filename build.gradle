@@ -1,0 +1,57 @@
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "maven-publish"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url "https://www.jitpack.io" }
+    maven { url "https://repo.opencollab.dev/maven-snapshots" }
+    maven { url "https://repo.opencollab.dev/maven-releases/" }
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+    compileOnly("cn.powernukkitx:powernukkitx:1.20.10-r1")
+    compileOnly("com.nukkitx:natives:1.0.3")
+}
+
+assemble.dependsOn shadowJar
+
+shadowJar {
+    def finalJarName = "${project.name}-${version}-all.jar"
+    archiveFileName.set(finalJarName)
+
+    def relocateDependency = { String packageName ->
+        relocate(
+                packageName, "io.fallentech.form_api.dependency." + packageName
+        )
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.fallentech'
+            artifactId = 'form_api'
+            version = '0.1'
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/FallenTechPE/NukkitFormAPI"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
