@@ -6,6 +6,6 @@ api: [ "1.0.0" ]
 load: STARTUP
 
 authors: [ "haappi" ]
-description: FallenTech GUI API.
+description: "{project.description}"
 website: https://github.com/FallentechPE/NukkitGUIAPI
 prefix: "GUI"

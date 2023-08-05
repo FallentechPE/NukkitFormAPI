@@ -11,7 +11,15 @@ repositories {
     maven { url "https://repo.opencollab.dev/maven-snapshots" }
     maven { url "https://repo.opencollab.dev/maven-releases/" }
 }
-version = "0.0.1"
+
+version = "0.0.2"
+group = "io.fallentech"
+description = "A simple form/gui API for PowerNukkitX"
+ext {
+    artifactID = "form_api"
+}
+
+
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
@@ -23,7 +31,16 @@ dependencies {
 assemble.dependsOn shadowJar
 
 processResources {
-  filter { String line -> line.replace('{project.version}', project.version) }
+    filter { String line ->
+        line.replaceAll(/\{project\.(\w+)\}/) { match ->
+            def propertyName = match[1]
+            if (project.hasProperty(propertyName)) {
+                return project[propertyName].toString()
+            } else {
+                return match
+            }
+        }
+    }
 }
 
 shadowJar {
@@ -32,7 +49,7 @@ shadowJar {
 
     def relocateDependency = { String packageName ->
         relocate(
-                packageName, "io.fallentech.form_api.dependency." + packageName
+                packageName, "${group}.${artifactID}.dependency." + packageName
         )
     }
 }
@@ -40,9 +57,9 @@ shadowJar {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'io.fallentech'
-            artifactId = 'form_api'
-            version = '0.1'
+            groupId = "${group}"
+            artifactId = "${artifactID}"
+            version = "${version}"
 
             from components.java
         }
