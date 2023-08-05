@@ -11,7 +11,7 @@ repositories {
     maven { url "https://repo.opencollab.dev/maven-snapshots" }
     maven { url "https://repo.opencollab.dev/maven-releases/" }
 }
-
+version = "0.0.1"
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
@@ -21,6 +21,10 @@ dependencies {
 }
 
 assemble.dependsOn shadowJar
+
+processResources {
+  filter { String line -> line.replace('{project.version}', project.version) }
+}
 
 shadowJar {
     def finalJarName = "${project.name}-${version}-all.jar"
